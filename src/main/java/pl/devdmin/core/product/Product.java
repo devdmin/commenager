@@ -1,5 +1,8 @@
-package pl.devdmin.core.model;
+package pl.devdmin.core.product;
 
+
+import pl.devdmin.core.acquisition.Acquisition;
+import pl.devdmin.core.order.Order;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -10,6 +13,7 @@ import java.util.Set;
  *
  * @author Damian Ujma
  */
+@Entity
 public class Product {
 
     @Id
@@ -21,6 +25,9 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private Set<Acquisition> acquisitions;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private Set<Order> orders;
 
     public Long getId() {
         return id;
@@ -46,6 +53,14 @@ public class Product {
         this.acquisitions = acquisitions;
     }
 
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,7 +70,9 @@ public class Product {
 
         if (id != null ? !id.equals(product.id) : product.id != null) return false;
         if (name != null ? !name.equals(product.name) : product.name != null) return false;
-        return acquisitions != null ? acquisitions.equals(product.acquisitions) : product.acquisitions == null;
+        if (acquisitions != null ? !acquisitions.equals(product.acquisitions) : product.acquisitions != null)
+            return false;
+        return orders != null ? orders.equals(product.orders) : product.orders == null;
 
     }
 
@@ -64,6 +81,7 @@ public class Product {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (acquisitions != null ? acquisitions.hashCode() : 0);
+        result = 31 * result + (orders != null ? orders.hashCode() : 0);
         return result;
     }
 
@@ -73,6 +91,7 @@ public class Product {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", acquisitions=" + acquisitions +
+                ", orders=" + orders +
                 '}';
     }
 }

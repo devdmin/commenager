@@ -1,7 +1,7 @@
-package pl.devdmin.core.model;
+package pl.devdmin.core.acquisition;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.NonNull;
+import pl.devdmin.core.product.Product;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +12,7 @@ import java.time.LocalDate;
  *
  * @author Damian Ujma
  */
+@Entity
 public class Acquisition {
     @Id
     @GeneratedValue
