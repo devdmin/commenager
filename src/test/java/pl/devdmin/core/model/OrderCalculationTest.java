@@ -4,44 +4,26 @@ import org.junit.Before;
 import org.junit.Test;
 import pl.devdmin.core.order.*;
 import pl.devdmin.core.order.shippingStrategies.AllegroInpostShippingCalculationStrategy;
-import pl.devdmin.core.order.shippingStrategies.InpostShippingCalculationStrategy;
-import pl.devdmin.core.order.shippingStrategies.PocztaPolskaCOAShippingCalculationStrategy;
-import pl.devdmin.core.order.shippingStrategies.PocztaPolskaShippingCalculationStrategy;
+import pl.devdmin.core.order.vatStrategies.Vat23;
+import pl.devdmin.core.product.Product;
 
 import static org.junit.Assert.*;
 
 public class OrderCalculationTest {
     private Order order;
-
+    private Product product;
     @Before
     public void setUp(){
         order = new Order();
-    }
-    @Test
-    public void testInpostShippingCalculationStrategy(){
-        order.setShippingCalculationStrategy(new InpostShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(13.76 == shippingCost);
-    }
-
-    @Test
-    public void testAllegroInpostShippingCalculationStrategy(){
+        product = new Product();
+        order.setProduct(product);
+        order.setPrice(100.0);
+        order.setVatRateStrategy(new Vat23());
         order.setShippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(8.99 == shippingCost);
     }
 
     @Test
-    public void testPocztaPolskaCalculationStrategy(){
-        order.setShippingCalculationStrategy(new PocztaPolskaShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(5.20 == shippingCost);
-    }
-
-    @Test
-    public void testPocztaPolskaCOACalculationStrategy(){
-        order.setShippingCalculationStrategy(new PocztaPolskaCOAShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(16.80 == shippingCost);
+    public void testTotalCostCalculation(){
+        assertEquals(order.getTotalPrice(), (order.getPrice() * 0.23) + order.getPrice() + 8.99, 0);
     }
 }

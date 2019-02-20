@@ -38,8 +38,9 @@ public class Order {
     @NotEmpty
     private double price;
 
-    @NotEmpty
     private ShippingMethod shippingMethod;
+
+    private VatRateStrategy vatRateStrategy;
 
     public Long getId() {
         return id;
@@ -109,12 +110,28 @@ public class Order {
         return shippingCalculationStrategy;
     }
 
+    public VatRateStrategy getVatRateStrategy() {
+        return vatRateStrategy;
+    }
+
+    public void setVatRateStrategy(VatRateStrategy vatRateStrategy) {
+        this.vatRateStrategy = vatRateStrategy;
+    }
+
     public void setShippingCalculationStrategy(ShippingCalculationStrategy shippingCalculationStrategy) {
         this.shippingCalculationStrategy = shippingCalculationStrategy;
     }
 
     public double getShippingCost(){
         return shippingCalculationStrategy.getShippingCost();
+    }
+
+    public double getVatValue(){
+        return vatRateStrategy.calculatePriceWithVat(price);
+    }
+
+    public double getTotalPrice() {
+        return price + getVatValue() + getShippingCost();
     }
 
     @Override
@@ -129,8 +146,11 @@ public class Order {
         if (id != null ? !id.equals(order.id) : order.id != null) return false;
         if (date != null ? !date.equals(order.date) : order.date != null) return false;
         if (product != null ? !product.equals(order.product) : order.product != null) return false;
+        if (shippingCalculationStrategy != null ? !shippingCalculationStrategy.equals(order.shippingCalculationStrategy) : order.shippingCalculationStrategy != null)
+            return false;
         if (client != null ? !client.equals(order.client) : order.client != null) return false;
-        return address != null ? address.equals(order.address) : order.address == null;
+        if (address != null ? !address.equals(order.address) : order.address != null) return false;
+        return shippingMethod == order.shippingMethod;
 
     }
 
@@ -141,11 +161,13 @@ public class Order {
         result = id != null ? id.hashCode() : 0;
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + (shippingCalculationStrategy != null ? shippingCalculationStrategy.hashCode() : 0);
         result = 31 * result + amount;
         result = 31 * result + (client != null ? client.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (shippingMethod != null ? shippingMethod.hashCode() : 0);
         return result;
     }
 
@@ -161,4 +183,6 @@ public class Order {
                 ", price=" + price +
                 '}';
     }
+
+
 }

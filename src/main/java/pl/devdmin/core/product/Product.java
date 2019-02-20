@@ -6,6 +6,7 @@ import pl.devdmin.core.order.Order;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -29,6 +30,9 @@ public class Product {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private Set<Order> orders;
 
+    private int vatRate;
+
+
     public Long getId() {
         return id;
     }
@@ -46,7 +50,11 @@ public class Product {
     }
 
     public Set<Acquisition> getAcquisitions() {
-        return acquisitions;
+        if (this.acquisitions == null) {
+            this.acquisitions = new HashSet<>();
+        }
+        return this.acquisitions;
+
     }
 
     public void setAcquisitions(Set<Acquisition> acquisitions) {
@@ -54,7 +62,18 @@ public class Product {
     }
 
     public Set<Order> getOrders() {
-        return orders;
+        if (this.orders == null) {
+            this.orders = new HashSet<>();
+        }
+        return this.orders;
+    }
+
+    public int getVatRate() {
+        return vatRate;
+    }
+
+    public void setVatRate(int vatRate) {
+        this.vatRate = vatRate;
     }
 
     public void setOrders(Set<Order> orders) {

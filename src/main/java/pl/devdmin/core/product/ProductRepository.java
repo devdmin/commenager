@@ -1,10 +1,6 @@
 package pl.devdmin.core.product;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.Repository;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
-import pl.devdmin.core.product.Product;
 
 /**
  * Repository class for <code>Product</code> domain objects All method names are compliant with Spring Data naming
