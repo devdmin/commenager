@@ -4,7 +4,8 @@
 
 ## Running commenager locally
 
-```git clone https://github.com/devdmin/commenager.git
+```
+git clone https://github.com/devdmin/commenager.git
 cd commenager
 ./mvnw package
 java -jar target/*.jar
