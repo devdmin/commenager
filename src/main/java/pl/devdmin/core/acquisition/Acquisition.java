@@ -5,6 +5,7 @@ import pl.devdmin.core.product.Product;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -30,7 +31,7 @@ public class Acquisition {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate buyDate;
 
-    private double price;
+    private BigDecimal price;
 
     public Long getId() {
         return id;
@@ -64,12 +65,16 @@ public class Acquisition {
         this.buyDate = buyDate;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getTotalPrice(){
+        return price.multiply(new BigDecimal(amount));
     }
 
     @Override
@@ -80,23 +85,20 @@ public class Acquisition {
         Acquisition that = (Acquisition) o;
 
         if (amount != that.amount) return false;
-        if (Double.compare(that.price, price) != 0) return false;
-        if (!id.equals(that.id)) return false;
-        if (!product.equals(that.product)) return false;
-        return buyDate.equals(that.buyDate);
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (product != null ? !product.equals(that.product) : that.product != null) return false;
+        if (buyDate != null ? !buyDate.equals(that.buyDate) : that.buyDate != null) return false;
+        return price != null ? price.equals(that.price) : that.price == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + amount;
-        result = 31 * result + product.hashCode();
-        result = 31 * result + buyDate.hashCode();
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (product != null ? product.hashCode() : 0);
+        result = 31 * result + (buyDate != null ? buyDate.hashCode() : 0);
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         return result;
     }
 

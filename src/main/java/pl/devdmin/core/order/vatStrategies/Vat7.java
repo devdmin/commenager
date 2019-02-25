@@ -2,9 +2,11 @@ package pl.devdmin.core.order.vatStrategies;
 
 import pl.devdmin.core.order.VatRateStrategy;
 
+import java.math.BigDecimal;
+
 public class Vat7 implements VatRateStrategy {
     @Override
-    public double calculatePriceWithVat(double price) {
-        return price * 0.07;
+    public BigDecimal calculatePriceWithVat(BigDecimal price) {
+        return price.multiply(new BigDecimal(("0.07")));
     }
 }

@@ -2,9 +2,11 @@ package pl.devdmin.core.order.shippingStrategies;
 
 import pl.devdmin.core.order.ShippingCalculationStrategy;
 
+import java.math.BigDecimal;
+
 public class PocztaPolskaShippingCalculationStrategy implements ShippingCalculationStrategy {
     @Override
-    public double getShippingCost() {
-        return 5.20;
+    public BigDecimal getShippingCost() {
+        return new BigDecimal("5.20");
     }
 }

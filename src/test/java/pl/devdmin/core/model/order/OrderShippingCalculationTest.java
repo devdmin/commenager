@@ -1,5 +1,6 @@
-package pl.devdmin.core.model;
+package pl.devdmin.core.model.order;
 
+import org.assertj.core.api.BigDecimalAssert;
 import org.junit.Before;
 import org.junit.Test;
 import pl.devdmin.core.order.Order;
@@ -8,6 +9,9 @@ import pl.devdmin.core.order.shippingStrategies.InpostShippingCalculationStrateg
 import pl.devdmin.core.order.shippingStrategies.PocztaPolskaCOAShippingCalculationStrategy;
 import pl.devdmin.core.order.shippingStrategies.PocztaPolskaShippingCalculationStrategy;
 
+import java.math.BigDecimal;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class OrderShippingCalculationTest {
@@ -20,28 +24,28 @@ public class OrderShippingCalculationTest {
     @Test
     public void testInpostShippingCalculationStrategy(){
         order.setShippingCalculationStrategy(new InpostShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(13.76 == shippingCost);
+        BigDecimal shippingCost = order.getShippingCost();
+        assertEquals(shippingCost, new BigDecimal("13.76"));
     }
 
     @Test
     public void testAllegroInpostShippingCalculationStrategy(){
         order.setShippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(8.99 == shippingCost);
+        BigDecimal shippingCost = order.getShippingCost();
+        assertEquals(shippingCost, new BigDecimal("8.99"));
     }
 
     @Test
     public void testPocztaPolskaCalculationStrategy(){
         order.setShippingCalculationStrategy(new PocztaPolskaShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(5.20 == shippingCost);
+        BigDecimal shippingCost = order.getShippingCost();
+        assertEquals(shippingCost, new BigDecimal("5.20"));
     }
 
     @Test
     public void testPocztaPolskaCOACalculationStrategy(){
         order.setShippingCalculationStrategy(new PocztaPolskaCOAShippingCalculationStrategy());
-        double shippingCost = order.getShippingCost();
-        assertTrue(16.80 == shippingCost);
+        BigDecimal shippingCost = order.getShippingCost();
+        assertEquals(shippingCost, new BigDecimal("16.80"));
     }
 }

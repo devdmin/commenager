@@ -2,9 +2,11 @@ package pl.devdmin.core.order.shippingStrategies;
 
 import pl.devdmin.core.order.ShippingCalculationStrategy;
 
+import java.math.BigDecimal;
+
 public class AllegroInpostShippingCalculationStrategy implements ShippingCalculationStrategy {
 
-    public double getShippingCost() {
-        return 8.99;
+    public BigDecimal getShippingCost() {
+        return new BigDecimal("8.99");
     }
 }

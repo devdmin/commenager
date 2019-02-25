@@ -5,6 +5,7 @@ import pl.devdmin.core.product.Product;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 @Entity
 @Table(name = "Orders")
@@ -37,7 +38,7 @@ public class Order {
     private String address;
 
     @NotEmpty
-    private double price;
+    private BigDecimal price;
 
 
     private ShippingMethod shippingMethod;
@@ -93,11 +94,11 @@ public class Order {
         this.address = address;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -125,16 +126,16 @@ public class Order {
         this.shippingCalculationStrategy = shippingCalculationStrategy;
     }
 
-    public double getShippingCost(){
+    public BigDecimal getShippingCost(){
         return shippingCalculationStrategy.getShippingCost();
     }
 
-    public double getVatValue(){
-        return vatRateStrategy.calculatePriceWithVat(price);
+    public BigDecimal getVatValue(){
+        return vatRateStrategy.calculatePriceWithVat(price.multiply(new BigDecimal(amount)));
     }
 
-    public double getTotalPrice() {
-        return price + getVatValue() + getShippingCost();
+    public BigDecimal getTotalPrice() {
+        return price.multiply(new BigDecimal(amount)).add(getVatValue()).add(getShippingCost());
     }
 
     @Override
@@ -145,7 +146,6 @@ public class Order {
         Order order = (Order) o;
 
         if (amount != order.amount) return false;
-        if (Double.compare(order.price, price) != 0) return false;
         if (id != null ? !id.equals(order.id) : order.id != null) return false;
         if (date != null ? !date.equals(order.date) : order.date != null) return false;
         if (product != null ? !product.equals(order.product) : order.product != null) return false;
@@ -153,24 +153,24 @@ public class Order {
             return false;
         if (client != null ? !client.equals(order.client) : order.client != null) return false;
         if (address != null ? !address.equals(order.address) : order.address != null) return false;
-        return shippingMethod == order.shippingMethod;
+        if (price != null ? !price.equals(order.price) : order.price != null) return false;
+        if (shippingMethod != order.shippingMethod) return false;
+        return vatRateStrategy != null ? vatRateStrategy.equals(order.vatRateStrategy) : order.vatRateStrategy == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + (shippingCalculationStrategy != null ? shippingCalculationStrategy.hashCode() : 0);
         result = 31 * result + amount;
         result = 31 * result + (client != null ? client.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (shippingMethod != null ? shippingMethod.hashCode() : 0);
+        result = 31 * result + (vatRateStrategy != null ? vatRateStrategy.hashCode() : 0);
         return result;
     }
 

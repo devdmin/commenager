@@ -1,5 +1,7 @@
 package pl.devdmin.core.order;
 
+import java.math.BigDecimal;
+
 public interface VatRateStrategy {
-    double calculatePriceWithVat(double price);
+    BigDecimal calculatePriceWithVat(BigDecimal price);
 }
