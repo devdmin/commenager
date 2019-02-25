@@ -20,6 +20,7 @@ public class Order {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Convert(converter = ShippingCalculationStrategyConverter.class)
     private ShippingCalculationStrategy shippingCalculationStrategy;
 
     public Order() {
@@ -38,8 +39,10 @@ public class Order {
     @NotEmpty
     private double price;
 
+
     private ShippingMethod shippingMethod;
 
+    @Convert(converter = VatRateStrategyConverter.class)
     private VatRateStrategy vatRateStrategy;
 
     public Long getId() {
