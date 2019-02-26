@@ -1,6 +1,7 @@
 package pl.devdmin.core.order;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import pl.devdmin.core.Model;
 import pl.devdmin.core.product.Product;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 @Entity
 @Table(name = "Orders")
-public class Order {
+public class Order implements Model {
     @Id
     @GeneratedValue
     private Long id;

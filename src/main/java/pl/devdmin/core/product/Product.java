@@ -1,6 +1,7 @@
 package pl.devdmin.core.product;
 
 
+import pl.devdmin.core.Model;
 import pl.devdmin.core.acquisition.Acquisition;
 import pl.devdmin.core.order.Order;
 
@@ -15,7 +16,7 @@ import java.util.Set;
  * @author Damian Ujma
  */
 @Entity
-public class Product {
+public class Product implements Model {
 
     @Id
     @GeneratedValue

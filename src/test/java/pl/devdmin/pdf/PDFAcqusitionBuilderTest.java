@@ -1,11 +1,16 @@
 package pl.devdmin.pdf;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import pl.devdmin.core.acquisition.Acquisition;
+import pl.devdmin.core.order.pdf.PDFAcqusitionBuilder;
 import pl.devdmin.core.product.Product;
 
 import java.math.BigDecimal;
+
+import static org.junit.Assert.assertEquals;
 
 public class PDFAcqusitionBuilderTest {
 
@@ -26,5 +31,11 @@ public class PDFAcqusitionBuilderTest {
         pdfBuilder = new PDFAcqusitionBuilder(acquisition);
     }
 
+    @Test
+    public void buildPDF(){
+        PDDocument document = pdfBuilder.build();
 
+        // test default version
+        assertEquals(1.4f, document.getVersion(),0.0f);
+    }
 }
