@@ -2,19 +2,18 @@ package pl.devdmin.pdf;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import pl.devdmin.core.acquisition.Acquisition;
-import pl.devdmin.core.order.pdf.PDFAcqusitionBuilder;
+import pl.devdmin.core.acquisition.pdf.PDFAcqusitionBuilder;
 import pl.devdmin.core.product.Product;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.containsString;
@@ -50,13 +49,18 @@ public class PDFAcqusitionBuilderTest {
         assertEquals(1.4f, document.getVersion(),0.0f);
     }
 
+
     @Test
-    public void testHeading() throws IOException{
-        assertHeadingContains(document, "Hello World");
+    public void testHeadingText() throws IOException{
+        assertDocumentContains(document, "ACQUSITUION RAPORT");
     }
 
-    private void assertHeadingContains(PDDocument document, String headingText) throws IOException {
-        assertThat(new PDFTextStripper().getText(document), containsString(headingText));
+    @Test
+    public void testHeadingDate() throws IOException{
+        assertDocumentContains(document, LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+    }
+    private void assertDocumentContains(PDDocument document, String text) throws IOException {
+        assertThat(new PDFTextStripper().getText(document), containsString(text));
     }
 
 }
