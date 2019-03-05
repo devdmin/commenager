@@ -78,6 +78,16 @@ public class Acquisition implements Model {
         return price.multiply(new BigDecimal(amount));
     }
 
+    public Acquisition() {
+    }
+
+    public Acquisition(@NotEmpty int amount, Product product, @NotEmpty LocalDate buyDate, BigDecimal price) {
+        this.amount = amount;
+        this.product = product;
+        this.buyDate = buyDate;
+        this.price = price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

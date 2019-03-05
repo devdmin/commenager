@@ -22,14 +22,15 @@ import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 
 public class PDFAcqusitionBuilderTest {
 
     private PDFBuilder pdfBuilder;
     private  Set<Acquisition> acquisitionSet;
-    private Acquisition acquisition, acquisition2;
-    private Product product, product2;
+    private Acquisition acquisition;
+    private Product product;
     private PDDocument document;
     @Before
     public void setUp(){
@@ -37,12 +38,11 @@ public class PDFAcqusitionBuilderTest {
         product.setName("EXAMPLE PRODUCT NAME");
         product.setVatRate(23);
 
-        acquisition = new Acquisition();
-        acquisition.setAmount(20);
-        acquisition.setProduct(product);
-        acquisition.setPrice(new BigDecimal("520.99"));
+        acquisitionSet = new HashSet<Acquisition>();
 
-        acquisitionSet = new HashSet<Acquisition>(Arrays.asList(acquisition));
+        for(int i = 0; i < 100;i++){
+            acquisitionSet.add(new Acquisition(i, product, LocalDate.now().minusDays(i),new BigDecimal(String.valueOf(i))));
+        }
 
         pdfBuilder = new PDFAcqusitionBuilder();
         document = pdfBuilder.build(acquisitionSet);
@@ -77,15 +77,22 @@ public class PDFAcqusitionBuilderTest {
         assertDocumentContains(document, "Amount");
         assertDocumentContains(document, "Price");
         assertDocumentContains(document, "Total Price");
-         }
+    }
 
     @Test
     public void testDrawTable() throws IOException{
-        assertDocumentContains(document, acquisition.getProduct().getName());
-        assertDocumentContains(document, String.valueOf(acquisition.getAmount()));
-        assertDocumentContains(document, acquisition.getPrice().toString());
-        assertDocumentContains(document, acquisition.getTotalPrice().toString());
-    }
+        for(Acquisition acquisition: acquisitionSet) {
+            assertDocumentContains(document, acquisition.getProduct().getName());
+            assertDocumentContains(document, String.valueOf(acquisition.getAmount()));
+            assertDocumentContains(document, acquisition.getPrice().toString());
+            assertDocumentContains(document, acquisition.getTotalPrice().toString());
+        }
+     }
+
+     @Test
+     public void testAmountOfPages() throws IOException{
+         assertTrue(document.getNumberOfPages() >= (acquisitionSet.size()/36));
+     }
 
     private void assertDocumentContains(PDDocument document, String text) throws IOException {
         assertThat(new PDFTextStripper().getText(document), containsString(text));

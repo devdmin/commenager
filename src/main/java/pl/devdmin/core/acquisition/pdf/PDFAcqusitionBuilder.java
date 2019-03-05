@@ -6,6 +6,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import pl.devdmin.core.acquisition.Acquisition;
+import pl.devdmin.core.util.UtilsClass;
 import pl.devdmin.pdf.PDFBuilder;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Set;
 
 public class PDFAcqusitionBuilder implements PDFBuilder<Acquisition> {
@@ -37,42 +39,64 @@ public class PDFAcqusitionBuilder implements PDFBuilder<Acquisition> {
     }
 
     private void createHeading(PDDocument document, PDPage page) {
-        String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         try {
+
             PDPageContentStream contentStream = new PDPageContentStream(document, page, true, true, true);
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 14);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(200.0f,800.0f);
-            contentStream.showText(HEADING_TEXT);
-            contentStream.endText();
-
-            contentStream.setFont(PDType1Font.TIMES_ROMAN, 10);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(450.0f,800.0f);
-            contentStream.showText("Generated: " + formattedDate);
-            contentStream.endText();
-
+            printHeadingText(contentStream);
+            printGeneratingDate(contentStream);
             contentStream.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
+    private void printHeadingText(PDPageContentStream stream) throws IOException {
+        stream.setFont(PDType1Font.TIMES_ROMAN, 14);
+        stream.beginText();
+        stream.newLineAtOffset(200.0f,800.0f);
+        stream.showText(HEADING_TEXT);
+        stream.endText();
+    }
+
+    private void printGeneratingDate(PDPageContentStream stream) throws IOException{
+        String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        stream.setFont(PDType1Font.TIMES_ROMAN, 10);
+        stream.beginText();
+        stream.newLineAtOffset(450.0f,800.0f);
+        stream.showText("Generated: " + formattedDate);
+        stream.endText();
+    }
     private void createBody(PDDocument document, PDPage page, Set<Acquisition> acquisitionSet){
         createTable(document, page, acquisitionSet);
     }
 
+
     private void createTable(PDDocument document, PDPage page, Set<Acquisition> acquisitionSet) {
+       String[][] dataArray = getArrayFromSet(acquisitionSet);
+        PDPage pdPage;
+       for(int i = 0; i < dataArray.length; i = i + 36){
+           if (i == 0) {
+                pdPage = page;
+           }else{
+               pdPage = new PDPage(PDRectangle.A4);
+               document.addPage(pdPage);
+           }
+           if(i+36 > dataArray.length){
+               createTableOnPage(document,pdPage, UtilsClass.cloneArray(dataArray, i, dataArray.length), 750);
+           }else {
+               createTableOnPage(document,pdPage, UtilsClass.cloneArray(dataArray, i, i + 36), 750);
+           }
+        }
+    }
+    private void createTableOnPage(PDDocument document,PDPage page, String[][] dataArray, float y) {
         try {
             PDPageContentStream contentStream = new PDPageContentStream(document, page, true, true, true);
-            String[][] dataArray = getArrayFromSet(acquisitionSet);
-            drawTable(page, contentStream, 750, 10, dataArray);
+            drawTable(page, contentStream, y, 10, dataArray);
             contentStream.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-
         }
     }
 
@@ -110,6 +134,7 @@ public class PDFAcqusitionBuilder implements PDFBuilder<Acquisition> {
         final float colWidth = tableWidth/(float)cols;
         final float cellMargin=5f;
 
+
         //draw the rows
         float nexty = y ;
         for (int i = 0; i <= rows; i++) {
@@ -129,6 +154,7 @@ public class PDFAcqusitionBuilder implements PDFBuilder<Acquisition> {
 
         float textx = margin+cellMargin;
         float texty = y-15;
+
         for(int i = 0; i < content.length; i++){
             for(int j = 0 ; j < content[i].length; j++){
                 String text = content[i][j];
@@ -138,6 +164,7 @@ public class PDFAcqusitionBuilder implements PDFBuilder<Acquisition> {
                 contentStream.endText();
                 textx += colWidth;
             }
+
             texty-=rowHeight;
             textx = margin+cellMargin;
         }
