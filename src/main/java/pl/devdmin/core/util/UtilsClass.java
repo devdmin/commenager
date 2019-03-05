@@ -1,7 +1,5 @@
 package pl.devdmin.core.util;
 
-import java.util.Arrays;
-
 public class UtilsClass {
     public static String[][] cloneArray(String[][] src, int from, int to) {
         String[][] target = new String[to-from][src[0].length];
@@ -11,7 +9,6 @@ public class UtilsClass {
                 target[i][j] = src[i+from][j];
             }
         }
-
         return target;
     }
 }

@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -87,6 +86,7 @@ public class PDFAcqusitionBuilderTest {
             assertDocumentContains(document, acquisition.getPrice().toString());
             assertDocumentContains(document, acquisition.getTotalPrice().toString());
         }
+
      }
 
      @Test
