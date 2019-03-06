@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition> implements PDFBuilder<Acquisition> {
+public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition>{
     private final static String HEADING_TEXT = "ACQUSITUION RAPORT";
 
     public PDFAcqusitionBuilder() {

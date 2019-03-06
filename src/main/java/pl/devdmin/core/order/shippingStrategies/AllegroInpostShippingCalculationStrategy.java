@@ -9,4 +9,9 @@ public class AllegroInpostShippingCalculationStrategy implements ShippingCalcula
     public BigDecimal getShippingCost() {
         return new BigDecimal("8.99");
     }
+
+    @Override
+    public String getShippingName() {
+        return "Allegro Inpost";
+    }
 }

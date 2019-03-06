@@ -9,4 +9,9 @@ public class PocztaPolskaShippingCalculationStrategy implements ShippingCalculat
     public BigDecimal getShippingCost() {
         return new BigDecimal("5.20");
     }
+
+    @Override
+    public String getShippingName() {
+        return "Poczta Polska";
+    }
 }

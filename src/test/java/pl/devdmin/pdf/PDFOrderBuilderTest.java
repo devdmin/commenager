@@ -4,8 +4,10 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Before;
 import org.junit.Test;
-import pl.devdmin.core.acquisition.Acquisition;
-import pl.devdmin.core.acquisition.pdf.PDFAcqusitionBuilder;
+import pl.devdmin.core.order.Order;
+import pl.devdmin.core.order.pdf.PDFOrderBuilder;
+import pl.devdmin.core.order.shippingStrategies.AllegroInpostShippingCalculationStrategy;
+import pl.devdmin.core.order.vatStrategies.Vat23;
 import pl.devdmin.core.product.Product;
 
 import java.io.IOException;
@@ -16,19 +18,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-
-public class PDFAcqusitionBuilderTest {
-
+public class PDFOrderBuilderTest {
     private PDFBuilder pdfBuilder;
-    private  Set<Acquisition> acquisitionSet;
-    private Acquisition acquisition;
+    private Set<Order> orderSet;
     private Product product;
     private PDDocument document;
     @Before
@@ -37,14 +36,14 @@ public class PDFAcqusitionBuilderTest {
         product.setName("EXAMPLE PRODUCT NAME");
         product.setVatRate(23);
 
-        acquisitionSet = new HashSet<Acquisition>();
+        orderSet = new HashSet<Order>();
 
-        for(int i = 0; i < 50;i++){
-            acquisitionSet.add(new Acquisition(i, product, LocalDate.now().minusDays(i),new BigDecimal(String.valueOf(i))));
-        }
 
-        pdfBuilder = new PDFAcqusitionBuilder();
-        document = pdfBuilder.build(acquisitionSet);
+        orderSet.add(new Order(product,new AllegroInpostShippingCalculationStrategy(),3,"Joe Doe","Warszawska 3 43-143 Poznan",new BigDecimal("4.02"),new Vat23()));
+
+
+        pdfBuilder = new PDFOrderBuilder();
+        document = pdfBuilder.build(orderSet);
     }
 
     @Test
@@ -53,10 +52,9 @@ public class PDFAcqusitionBuilderTest {
         assertEquals(1.4f, document.getVersion(),0.0f);
     }
 
-
     @Test
     public void testHeadingText() throws IOException{
-        assertDocumentContains(document, "ACQUSITUION RAPORT");
+        assertDocumentContains(document, "ORDER RAPORT");
     }
 
     @Test
@@ -67,35 +65,45 @@ public class PDFAcqusitionBuilderTest {
     @Test
     public void testNameFile() throws IOException{
         assertThat(pdfBuilder.getFile().getName(), startsWith(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-        assertThat(pdfBuilder.getFile().getName(), endsWith("acquisition.pdf"));
+        assertThat(pdfBuilder.getFile().getName(), endsWith("order.pdf"));
     }
 
     @Test
     public void testHeadingwTable() throws IOException{
-        assertDocumentContains(document,"Product");
+        assertDocumentContains(document,"Date");
+        assertDocumentContains(document, "Product");
         assertDocumentContains(document, "Amount");
         assertDocumentContains(document, "Price");
+        assertDocumentContains(document, "VAT");
+        assertDocumentContains(document, "Shipping Cos");
         assertDocumentContains(document, "Total Price");
+        assertDocumentContains(document, "Address");
     }
 
     @Test
     public void testDrawTable() throws IOException{
-        for(Acquisition acquisition: acquisitionSet) {
-            assertDocumentContains(document, acquisition.getProduct().getName());
-            assertDocumentContains(document, String.valueOf(acquisition.getAmount()));
-            assertDocumentContains(document, acquisition.getPrice().toString());
-            assertDocumentContains(document, acquisition.getTotalPrice().toString());
+        for(Order order: orderSet) {
+            assertDocumentContains(document, order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            assertDocumentContains(document, order.getProduct().getName());
+            assertDocumentContains(document, String.valueOf(order.getAmount()));
+            assertDocumentContains(document, order.getPrice().toString());
+            assertDocumentContains(document, String.valueOf(order.getVatValue()));
+            assertDocumentContains(document, order.getShippingCost().toString());
+            assertDocumentContains(document, order.getTotalPrice().toString());
+            assertDocumentContains(document, order.getAddress());
         }
 
-     }
+    }
 
-     @Test
-     public void testAmountOfPages() throws IOException{
-         assertTrue(document.getNumberOfPages() >= (acquisitionSet.size()/36));
-     }
+    @Test
+    public void testAmountOfPages() throws IOException{
+        document.save("test.pdf");
+        assertTrue(document.getNumberOfPages() >= (orderSet.size()/36));
+    }
 
     private void assertDocumentContains(PDDocument document, String text) throws IOException {
         assertThat(new PDFTextStripper().getText(document), containsString(text));
     }
+
 
 }

@@ -2,6 +2,7 @@ package pl.devdmin.core.order;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.devdmin.core.Model;
+import pl.devdmin.core.order.vatStrategies.VatRateStrategy;
 import pl.devdmin.core.product.Product;
 
 import javax.persistence.*;
@@ -29,6 +30,17 @@ public class Order implements Model {
         this.date = LocalDate.now();
     }
 
+    public Order(Product product, ShippingCalculationStrategy shippingCalculationStrategy, @NotEmpty int amount, @NotEmpty String client, @NotEmpty String address, @NotEmpty BigDecimal price, VatRateStrategy vatRateStrategy) {
+        this.date = LocalDate.now();
+        this.product = product;
+        this.shippingCalculationStrategy = shippingCalculationStrategy;
+        this.amount = amount;
+        this.client = client;
+        this.address = address;
+        this.price = price;
+        this.vatRateStrategy = vatRateStrategy;
+    }
+
     @NotEmpty
     private int amount;
 
@@ -46,6 +58,9 @@ public class Order implements Model {
 
     @Convert(converter = VatRateStrategyConverter.class)
     private VatRateStrategy vatRateStrategy;
+
+
+
 
     public Long getId() {
         return id;
@@ -139,6 +154,12 @@ public class Order implements Model {
         return price.multiply(new BigDecimal(amount)).add(getVatValue()).add(getShippingCost());
     }
 
+    public String getShippingName(){
+        return shippingCalculationStrategy.getShippingName();
+    }
+    public int getVat(){
+        return vatRateStrategy.getVat();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

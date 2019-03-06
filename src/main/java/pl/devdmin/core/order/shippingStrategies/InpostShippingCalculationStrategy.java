@@ -9,4 +9,9 @@ public class InpostShippingCalculationStrategy implements ShippingCalculationStr
     public BigDecimal getShippingCost() {
         return new BigDecimal("13.76");
     }
+
+    @Override
+    public String getShippingName() {
+        return "Inpost";
+    }
 }
