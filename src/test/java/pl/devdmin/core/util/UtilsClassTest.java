@@ -6,13 +6,16 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static java.util.Arrays.deepEquals;
+import static java.util.Arrays.parallelPrefix;
 import static org.junit.Assert.assertEquals;
 
 public class UtilsClassTest {
     private String[][] array;
+    private String[] data;
     @Before
     public void setUp(){
         array = new String[][]{{"A","B","C"},{"D","E","F"},{"G","H","I"}, {"J","K","L"}, {"M","N","O"} };
+        data = new String[]{"hello world", "text", "example"};
     }
 
     @Test
@@ -33,21 +36,18 @@ public class UtilsClassTest {
     }
 
     @Test
-    public void testInsertRowToArray(){
-        int i  = 4;
-        int j =  2;
-        String[] data = {"hello world", "text"};
-        String[][] array = new String[i][j];
-
-        for(int k = 0; k < i; k++) {
-            for (int z = 0; z < j; z++) {
-                array[k][z] = "text";
-            }
-        }
+    public void testInsertBottomRowToArray(){
         String[][] newArray = UtilsClass.insertRowToArray(data, array, RowInsertion.BOTTOM);
+        for(int o = 0; o < data.length; o++)
+            assertEquals(data[o],newArray[(array.length)][o]);
 
-        for(int o = 0; o < j; o++)
-            assertEquals(data[o],newArray[i+1][o]);
+    }
+
+    @Test
+    public void testInsertTopRowToArray(){
+        String[][] newArray = UtilsClass.insertRowToArray(data, array, RowInsertion.TOP);
+        for(int o = 0; o < data.length; o++)
+            assertEquals(data[o],newArray[0][o]);
 
     }
 

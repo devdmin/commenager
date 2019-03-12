@@ -16,17 +16,27 @@ public class UtilsClass {
 
     public static String[][] insertRowToArray(String[] data, String[][] array, RowInsertion insertion){
         if(data.length == array[0].length) {
+            String[][] newArray = new String[array.length + 1][array[0].length];
             switch (insertion) {
                 case TOP:
+                    for(int i=0; i<array.length; i++)
+                        for (int j = 0; j < newArray[i].length; j++)
+                            newArray[i + 1][j] = array[i][j];
+
+                    for (int i = 0; i < data.length; i++)
+                        newArray[0][i] = data[i];
+
                     break;
                 case BOTTOM:
-                    array = Arrays.copyOf(array, array.length + 2);
-                    for (int i = 0; i < data.length; i++) {
-                        array[array.length][i] = data[i];
-                    }
+                    for(int i=0; i<array.length; i++)
+                        for(int j=0; j< array[i].length; j++)
+                            newArray[i][j]=array[i][j];
+
+                    for (int i = 0; i < data.length; i++)
+                        newArray[array.length][i] = data[i];
                     break;
             }
-            return array;
+            return newArray;
         }else{
             throw new RuntimeException();
         }
