@@ -3,6 +3,8 @@ package pl.devdmin.core.util;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static java.util.Arrays.deepEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -28,6 +30,25 @@ public class UtilsClassTest {
         for(int i = 0; i < (from-to); i++)
             for(int j = 0; j < copiedArray[0].length ; j++)
                 assertEquals(array[i+from][j],copiedArray[i][j]);
+    }
+
+    @Test
+    public void testInsertRowToArray(){
+        int i  = 4;
+        int j =  2;
+        String[] data = {"hello world", "text"};
+        String[][] array = new String[i][j];
+
+        for(int k = 0; k < i; k++) {
+            for (int z = 0; z < j; z++) {
+                array[k][z] = "text";
+            }
+        }
+        String[][] newArray = UtilsClass.insertRowToArray(data, array, RowInsertion.BOTTOM);
+
+        for(int o = 0; o < j; o++)
+            assertEquals(data[o],newArray[i+1][o]);
+
     }
 
 }

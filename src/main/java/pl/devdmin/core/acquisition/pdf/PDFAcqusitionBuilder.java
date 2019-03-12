@@ -7,6 +7,7 @@ import pl.devdmin.pdf.PDFBuilder;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -36,6 +37,11 @@ public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition>{
             i++;
         }
         return array;
+    }
+
+    @Override
+    protected BigDecimal getSumTotalPrice(Set<Acquisition> modelSet) {
+        return null;
     }
 
     @Override

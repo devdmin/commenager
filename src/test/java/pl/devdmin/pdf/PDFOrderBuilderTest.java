@@ -96,10 +96,21 @@ public class PDFOrderBuilderTest {
     }
 
     @Test
+    public void testSumTotalPrice() throws IOException{
+        BigDecimal sumTotalPrice = new BigDecimal("0");
+        for (Order order : orderSet) {
+            sumTotalPrice.add(order.getTotalPrice());
+        }
+
+        assertDocumentContains(document, sumTotalPrice.toString());
+    }
+
+    @Test
     public void testAmountOfPages() throws IOException{
         document.save("test.pdf");
         assertTrue(document.getNumberOfPages() >= (orderSet.size()/36));
     }
+
 
     private void assertDocumentContains(PDDocument document, String text) throws IOException {
         assertThat(new PDFTextStripper().getText(document), containsString(text));

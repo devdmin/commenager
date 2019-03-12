@@ -9,6 +9,7 @@ import pl.devdmin.core.util.UtilsClass;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
@@ -143,4 +144,5 @@ public abstract class AbstractPDFBuilder<T> implements PDFBuilder<T> {
     @Override
     public abstract File getFile() throws IOException;
     protected abstract String[][] getArrayFromSet(Set<T> modelSet);
+    protected abstract BigDecimal getSumTotalPrice(Set<T> modelSet);
 }
