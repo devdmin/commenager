@@ -6,13 +6,14 @@ import pl.devdmin.core.order.*;
 import pl.devdmin.core.order.shippingStrategies.AllegroInpostShippingCalculationStrategy;
 import pl.devdmin.core.order.vatStrategies.Vat23;
 import pl.devdmin.core.product.Product;
+import pl.devdmin.snapshot.OrderSnapshot;
 
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
 public class OrderCalculationTest {
-    private Order order;
+    private OrderSnapshot order;
     private Product product;
     @Before
     public void setUp(){
@@ -23,7 +24,7 @@ public class OrderCalculationTest {
                 .price(new BigDecimal("100.0"))
                 .vatRateStrategy(new Vat23())
                 .shippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy())
-                .build();
+                .build().toSnapshot();
 
     }
     @Test

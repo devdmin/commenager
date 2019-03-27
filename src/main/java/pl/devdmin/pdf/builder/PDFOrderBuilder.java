@@ -4,6 +4,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import pl.devdmin.core.order.Order;
 import pl.devdmin.pdf.AbstractPDFBuilder;
 import pl.devdmin.pdf.PDFBuilder;
+import pl.devdmin.snapshot.OrderSnapshot;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class PDFOrderBuilder extends AbstractPDFBuilder<Order> {
+public class PDFOrderBuilder extends AbstractPDFBuilder<OrderSnapshot> {
     private final static String HEADING_TEXT = "ORDER RAPORT";
 
     public PDFOrderBuilder() {
@@ -25,7 +26,7 @@ public class PDFOrderBuilder extends AbstractPDFBuilder<Order> {
     }
 
     @Override
-    protected String[][] getArrayFromSet(Set<Order> modelSet) {
+    protected String[][] getArrayFromSet(Set<OrderSnapshot> modelSet) {
         String[][] array = new String[modelSet.size()+2][8];
 
 
@@ -41,7 +42,7 @@ public class PDFOrderBuilder extends AbstractPDFBuilder<Order> {
 
 
         int i = 1;
-        for(Order order : modelSet){
+        for(OrderSnapshot order : modelSet){
             array[i][0] = order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             array[i][1] = order.getAddress();
             array[i][2] = order.getProduct().getName();
@@ -59,9 +60,9 @@ public class PDFOrderBuilder extends AbstractPDFBuilder<Order> {
         return array;
     }
 
-    protected BigDecimal getSumTotalPrice(Set<Order> orders) {
+    protected BigDecimal getSumTotalPrice(Set<OrderSnapshot> orders) {
         BigDecimal sumTotalPrice = new BigDecimal("0");
-        for (Order order : orders) {
+        for (OrderSnapshot order : orders) {
             sumTotalPrice.add(order.getTotalPrice());
         }
         return sumTotalPrice;

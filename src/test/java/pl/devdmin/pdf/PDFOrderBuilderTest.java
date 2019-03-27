@@ -9,6 +9,7 @@ import pl.devdmin.pdf.builder.PDFOrderBuilder;
 import pl.devdmin.core.order.shippingStrategies.AllegroInpostShippingCalculationStrategy;
 import pl.devdmin.core.order.vatStrategies.Vat23;
 import pl.devdmin.core.product.Product;
+import pl.devdmin.snapshot.OrderSnapshot;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -27,14 +28,14 @@ import static org.junit.Assert.assertTrue;
 
 public class PDFOrderBuilderTest {
     private PDFBuilder pdfBuilder;
-    private Set<Order> orderSet;
+    private Set<OrderSnapshot> orderSet;
     private Product product;
     private PDDocument document;
     @Before
     public void setUp(){
         product = Product.builder().name("EXAMPLE PRODUCT NAME").vatRate(23).build();
 
-        orderSet = new HashSet<Order>();
+        orderSet = new HashSet<OrderSnapshot>();
 
         orderSet.add(Order.builder()
                 .product(product)
@@ -44,7 +45,7 @@ public class PDFOrderBuilderTest {
                 .client("Joe Doe")
                 .price(new BigDecimal("4.02"))
                 .vatRateStrategy(new Vat23())
-                .build());
+                .build().toSnapshot());
 
         pdfBuilder = new PDFOrderBuilder();
         document = pdfBuilder.build(orderSet);
@@ -86,7 +87,7 @@ public class PDFOrderBuilderTest {
 
     @Test
     public void testDrawTable() throws IOException{
-        for(Order order: orderSet) {
+        for(OrderSnapshot order: orderSet) {
             assertDocumentContains(document, order.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             assertDocumentContains(document, order.getProduct().getName());
             assertDocumentContains(document, String.valueOf(order.getAmount()));
@@ -102,7 +103,7 @@ public class PDFOrderBuilderTest {
     @Test
     public void testSumTotalPrice() throws IOException{
         BigDecimal sumTotalPrice = new BigDecimal("0");
-        for (Order order : orderSet) {
+        for (OrderSnapshot order : orderSet) {
             sumTotalPrice.add(order.getTotalPrice());
         }
 

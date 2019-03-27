@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
-@Data
+
 @Builder
 public class Acquisition implements Model {
     private Long id;
@@ -31,10 +31,6 @@ public class Acquisition implements Model {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
     public BigDecimal getTotalPrice(){
         return price.multiply(new BigDecimal(amount));
     }
@@ -45,6 +41,7 @@ public class Acquisition implements Model {
                 .product(product.toSnapshot())
                 .buyDate(buyDate)
                 .price(price)
+                .totalPrice(getTotalPrice())
                 .build();
     }
 }

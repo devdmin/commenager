@@ -16,41 +16,38 @@ public class OrderVatCalculationTest {
 
     @Before
     public void setUp(){
-
         product = Product.builder().build();
-        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).build();
-
     }
 
     @Test
     public void Vat0Test(){
-        order.setVatRateStrategy(new Vat0());
+        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).vatRateStrategy(new Vat0()).build();
         assertEquals(order.getVatValue(), new BigDecimal("0"));
 
     }
 
     @Test
     public void Vat4Test(){
-        order.setVatRateStrategy(new Vat4());
-        assertEquals(order.getVatValue(), order.getPrice().multiply(new BigDecimal("0.04")));
+        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).vatRateStrategy(new Vat4()).build();
+        assertEquals(order.getVatValue(), new BigDecimal("100.0").multiply(new BigDecimal("0.04")));
     }
 
     @Test
     public void Vat7Test(){
-        order.setVatRateStrategy(new Vat7());
-        assertEquals(order.getVatValue(), order.getPrice().multiply(new BigDecimal("0.07")));
+        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).vatRateStrategy(new Vat7()).build();
+        assertEquals(order.getVatValue(), new BigDecimal("100.0").multiply(new BigDecimal("0.07")));
     }
 
     @Test
     public void Vat8Test(){
-        order.setVatRateStrategy(new Vat8());
-        assertEquals(order.getVatValue(), order.getPrice().multiply(new BigDecimal("0.08")));
+        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).vatRateStrategy(new Vat8()).build();
+        assertEquals(order.getVatValue(), new BigDecimal("100.0").multiply(new BigDecimal("0.08")));
     }
 
     @Test
     public void Vat23Test(){
-        order.setVatRateStrategy(new Vat23());
-        assertEquals(order.getVatValue(), order.getPrice().multiply(new BigDecimal("0.23")));
+        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).vatRateStrategy(new Vat23()).build();
+        assertEquals(order.getVatValue(), new BigDecimal("100.0").multiply(new BigDecimal("0.23")));
     }
 
 }

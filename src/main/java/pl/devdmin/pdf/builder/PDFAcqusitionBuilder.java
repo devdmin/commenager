@@ -3,6 +3,7 @@ package pl.devdmin.pdf.builder;
 import pl.devdmin.core.acquisition.Acquisition;
 import pl.devdmin.pdf.AbstractPDFBuilder;
 import pl.devdmin.pdf.PDFBuilder;
+import pl.devdmin.snapshot.AcquisitionSnapshot;
 
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition>{
+public class PDFAcqusitionBuilder extends AbstractPDFBuilder<AcquisitionSnapshot>{
     private final static String HEADING_TEXT = "ACQUSITUION RAPORT";
 
     public PDFAcqusitionBuilder() {
@@ -20,7 +21,7 @@ public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition>{
     }
 
     @Override
-    protected String[][] getArrayFromSet(Set<Acquisition> modelSet) {
+    protected String[][] getArrayFromSet(Set<AcquisitionSnapshot> modelSet) {
         String[][] array = new String[modelSet.size()+1][4];
 
         array[0][0] = "Product";
@@ -29,7 +30,7 @@ public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition>{
         array[0][3] = "Total Price";
 
         int i = 1;
-        for(Acquisition acquisition : modelSet){
+        for(AcquisitionSnapshot acquisition : modelSet){
             array[i][0] = acquisition.getProduct().getName();
             array[i][1] = String.valueOf(acquisition.getAmount());
             array[i][2] = acquisition.getPrice().toString();
@@ -40,7 +41,7 @@ public class PDFAcqusitionBuilder extends AbstractPDFBuilder<Acquisition>{
     }
 
     @Override
-    protected BigDecimal getSumTotalPrice(Set<Acquisition> modelSet) {
+    protected BigDecimal getSumTotalPrice(Set<AcquisitionSnapshot> modelSet) {
         return null;
     }
 

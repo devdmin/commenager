@@ -17,34 +17,30 @@ import static org.junit.Assert.assertTrue;
 public class OrderShippingCalculationTest {
     private Order order;
 
-    @Before
-    public void setUp(){
-        order = Order.builder().build();
-    }
     @Test
     public void testInpostShippingCalculationStrategy(){
-        order.setShippingCalculationStrategy(new InpostShippingCalculationStrategy());
+        order = Order.builder().shippingCalculationStrategy(new InpostShippingCalculationStrategy()).build();
         BigDecimal shippingCost = order.getShippingCost();
         assertEquals(shippingCost, new BigDecimal("13.76"));
     }
 
     @Test
     public void testAllegroInpostShippingCalculationStrategy(){
-        order.setShippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy());
+        order = Order.builder().shippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy()).build();
         BigDecimal shippingCost = order.getShippingCost();
         assertEquals(shippingCost, new BigDecimal("8.99"));
     }
 
     @Test
     public void testPocztaPolskaCalculationStrategy(){
-        order.setShippingCalculationStrategy(new PocztaPolskaShippingCalculationStrategy());
+        order = Order.builder().shippingCalculationStrategy(new PocztaPolskaShippingCalculationStrategy()).build();
         BigDecimal shippingCost = order.getShippingCost();
         assertEquals(shippingCost, new BigDecimal("5.20"));
     }
 
     @Test
     public void testPocztaPolskaCOACalculationStrategy(){
-        order.setShippingCalculationStrategy(new PocztaPolskaCOAShippingCalculationStrategy());
+        order = Order.builder().shippingCalculationStrategy(new PocztaPolskaCOAShippingCalculationStrategy()).build();
         BigDecimal shippingCost = order.getShippingCost();
         assertEquals(shippingCost, new BigDecimal("16.80"));
     }

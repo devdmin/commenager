@@ -7,6 +7,8 @@ import org.junit.Test;
 import pl.devdmin.core.acquisition.Acquisition;
 import pl.devdmin.pdf.builder.PDFAcqusitionBuilder;
 import pl.devdmin.core.product.Product;
+import pl.devdmin.snapshot.AcquisitionSnapshot;
+import pl.devdmin.snapshot.ProductSnapshot;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -27,18 +29,18 @@ import static org.junit.Assert.assertTrue;
 public class PDFAcqusitionBuilderTest {
 
     private PDFBuilder pdfBuilder;
-    private  Set<Acquisition> acquisitionSet;
-    private Acquisition acquisition;
+    private  Set<AcquisitionSnapshot> acquisitionSet;
+    private AcquisitionSnapshot acquisition;
     private Product product;
     private PDDocument document;
     @Before
     public void setUp(){
         product = Product.builder().name("EXAMPLE PRODUCT NAME").vatRate(23).build();
 
-        acquisitionSet = new HashSet<Acquisition>();
+        acquisitionSet = new HashSet<AcquisitionSnapshot>();
 
         for(int i = 0; i < 50;i++){
-            acquisitionSet.add(Acquisition.builder().id(Long.valueOf(i)).product(product).buyDate(LocalDate.now().minusDays(i)).price(new BigDecimal(String.valueOf(i))).build());
+            acquisitionSet.add(Acquisition.builder().id(Long.valueOf(i)).product(product).buyDate(LocalDate.now().minusDays(i)).price(new BigDecimal(String.valueOf(i))).build().toSnapshot());
         }
 
         pdfBuilder = new PDFAcqusitionBuilder();
@@ -78,7 +80,7 @@ public class PDFAcqusitionBuilderTest {
 
     @Test
     public void testDrawTable() throws IOException{
-        for(Acquisition acquisition: acquisitionSet) {
+        for(AcquisitionSnapshot acquisition: acquisitionSet) {
             assertDocumentContains(document, acquisition.getProduct().getName());
             assertDocumentContains(document, String.valueOf(acquisition.getAmount()));
             assertDocumentContains(document, acquisition.getPrice().toString());

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
+
 @Builder(builderMethodName = "defaultBuilder")
 public class Order implements Model {
     private Long id;
@@ -56,6 +56,10 @@ public class Order implements Model {
                 .client(client)
                 .address(address)
                 .price(price)
+                .date(date)
+                .vatValue(getVatValue())
+                .shippingCost(getShippingCost())
+                .totalPrice(getTotalPrice())
                 .build();
     }
 }

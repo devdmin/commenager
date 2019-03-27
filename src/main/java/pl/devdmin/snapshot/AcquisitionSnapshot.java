@@ -18,6 +18,8 @@ public class AcquisitionSnapshot {
 
     private BigDecimal price;
 
+    private BigDecimal totalPrice;
+
     public Acquisition toDomain(){
         return Acquisition.builder()
                 .amount(amount)

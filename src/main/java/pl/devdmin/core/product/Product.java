@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+
 @Builder
 public class Product implements Model {
     private Long id;

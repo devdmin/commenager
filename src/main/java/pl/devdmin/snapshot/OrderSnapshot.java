@@ -13,6 +13,7 @@ import pl.devdmin.core.order.vatStrategies.*;
 import pl.devdmin.core.product.Product;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -27,6 +28,14 @@ public class OrderSnapshot {
     private BigDecimal price;
 
     private ShippingMethod shippingMethod;
+
+    private LocalDate date;
+
+    private BigDecimal shippingCost;
+
+    private BigDecimal vatValue;
+
+    private BigDecimal totalPrice;
 
     public Order toDomain(){
         return Order.builder()
