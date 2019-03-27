@@ -1,4 +1,4 @@
-package pl.devdmin.core.order;
+package pl.devdmin.dao.order;
 
 import pl.devdmin.core.order.vatStrategies.*;
 

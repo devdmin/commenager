@@ -1,4 +1,4 @@
-package pl.devdmin.core.order.pdf;
+package pl.devdmin.pdf.builder;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import pl.devdmin.core.order.Order;

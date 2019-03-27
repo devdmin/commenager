@@ -1,6 +1,7 @@
-package pl.devdmin.core.order;
+package pl.devdmin.dao.order;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Component;
 
 /**
  * Repository class for <code>Order</code> domain objects All method names are compliant with Spring Data naming
@@ -8,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @author Damian Ujma
  */
+@Component
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
 }

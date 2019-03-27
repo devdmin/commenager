@@ -16,11 +16,10 @@ public class OrderVatCalculationTest {
 
     @Before
     public void setUp(){
-        order = new Order();
-        product = new Product();
-        order.setProduct(product);
-        order.setAmount(1);
-        order.setPrice(new BigDecimal("100.0"));
+
+        product = Product.builder().build();
+        order = Order.builder().product(product).amount(1).price(new BigDecimal("100.0")).build();
+
     }
 
     @Test

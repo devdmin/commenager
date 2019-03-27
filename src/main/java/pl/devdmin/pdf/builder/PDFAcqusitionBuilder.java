@@ -1,4 +1,4 @@
-package pl.devdmin.core.acquisition.pdf;
+package pl.devdmin.pdf.builder;
 
 import pl.devdmin.core.acquisition.Acquisition;
 import pl.devdmin.pdf.AbstractPDFBuilder;

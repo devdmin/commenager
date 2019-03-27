@@ -5,7 +5,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Before;
 import org.junit.Test;
 import pl.devdmin.core.acquisition.Acquisition;
-import pl.devdmin.core.acquisition.pdf.PDFAcqusitionBuilder;
+import pl.devdmin.pdf.builder.PDFAcqusitionBuilder;
 import pl.devdmin.core.product.Product;
 
 import java.io.IOException;
@@ -33,14 +33,12 @@ public class PDFAcqusitionBuilderTest {
     private PDDocument document;
     @Before
     public void setUp(){
-        product = new Product();
-        product.setName("EXAMPLE PRODUCT NAME");
-        product.setVatRate(23);
+        product = Product.builder().name("EXAMPLE PRODUCT NAME").vatRate(23).build();
 
         acquisitionSet = new HashSet<Acquisition>();
 
         for(int i = 0; i < 50;i++){
-            acquisitionSet.add(new Acquisition(i, product, LocalDate.now().minusDays(i),new BigDecimal(String.valueOf(i))));
+            acquisitionSet.add(Acquisition.builder().id(Long.valueOf(i)).product(product).buyDate(LocalDate.now().minusDays(i)).price(new BigDecimal(String.valueOf(i))).build());
         }
 
         pdfBuilder = new PDFAcqusitionBuilder();

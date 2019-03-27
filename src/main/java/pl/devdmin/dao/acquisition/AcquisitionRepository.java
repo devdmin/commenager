@@ -1,4 +1,4 @@
-package pl.devdmin.core.acquisition;
+package pl.devdmin.dao.acquisition;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.Repository;

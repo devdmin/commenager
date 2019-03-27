@@ -19,7 +19,7 @@ public class OrderShippingCalculationTest {
 
     @Before
     public void setUp(){
-        order = new Order();
+        order = Order.builder().build();
     }
     @Test
     public void testInpostShippingCalculationStrategy(){

@@ -5,7 +5,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.Before;
 import org.junit.Test;
 import pl.devdmin.core.order.Order;
-import pl.devdmin.core.order.pdf.PDFOrderBuilder;
+import pl.devdmin.pdf.builder.PDFOrderBuilder;
 import pl.devdmin.core.order.shippingStrategies.AllegroInpostShippingCalculationStrategy;
 import pl.devdmin.core.order.vatStrategies.Vat23;
 import pl.devdmin.core.product.Product;
@@ -32,15 +32,19 @@ public class PDFOrderBuilderTest {
     private PDDocument document;
     @Before
     public void setUp(){
-        product = new Product();
-        product.setName("EXAMPLE PRODUCT NAME");
-        product.setVatRate(23);
+        product = Product.builder().name("EXAMPLE PRODUCT NAME").vatRate(23).build();
 
         orderSet = new HashSet<Order>();
 
-
-        orderSet.add(new Order(product,new AllegroInpostShippingCalculationStrategy(),3,"Joe Doe","Warszawska 3 43-143 Poznan",new BigDecimal("4.02"),new Vat23()));
-
+        orderSet.add(Order.builder()
+                .product(product)
+                .shippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy())
+                .amount(3)
+                .address("Warszawska 3 43-143 Poznan")
+                .client("Joe Doe")
+                .price(new BigDecimal("4.02"))
+                .vatRateStrategy(new Vat23())
+                .build());
 
         pdfBuilder = new PDFOrderBuilder();
         document = pdfBuilder.build(orderSet);

@@ -1,5 +1,6 @@
-package pl.devdmin.core.order;
+package pl.devdmin.dao.order;
 
+import pl.devdmin.core.order.ShippingCalculationStrategy;
 import pl.devdmin.core.order.shippingStrategies.AllegroInpostShippingCalculationStrategy;
 import pl.devdmin.core.order.shippingStrategies.InpostShippingCalculationStrategy;
 import pl.devdmin.core.order.shippingStrategies.PocztaPolskaCOAShippingCalculationStrategy;

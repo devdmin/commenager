@@ -1,6 +1,7 @@
-package pl.devdmin.core.product;
+package pl.devdmin.dao.product;
 
 import org.springframework.data.repository.CrudRepository;
+
 
 /**
  * Repository class for <code>Product</code> domain objects All method names are compliant with Spring Data naming
