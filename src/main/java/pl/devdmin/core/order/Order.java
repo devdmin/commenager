@@ -57,6 +57,7 @@ public class Order implements Model {
                 .address(address)
                 .price(price)
                 .date(date)
+                .shippingMethod(shippingCalculationStrategy.getMethod())
                 .vatValue(getVatValue())
                 .shippingCost(getShippingCost())
                 .totalPrice(getTotalPrice())

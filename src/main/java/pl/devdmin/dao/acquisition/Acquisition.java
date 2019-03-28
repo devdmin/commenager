@@ -35,4 +35,14 @@ public class Acquisition {
     private LocalDate buyDate;
 
     private BigDecimal price;
+
+    public pl.devdmin.core.acquisition.Acquisition toDomain() {
+        return pl.devdmin.core.acquisition.Acquisition.builder()
+                .id(id)
+                .amount(amount)
+                .product(product.toDomain())
+                .buyDate(buyDate)
+                .price(price)
+                .build();
+    }
 }

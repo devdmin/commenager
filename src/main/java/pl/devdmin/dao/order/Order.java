@@ -1,5 +1,6 @@
 package pl.devdmin.dao.order;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.devdmin.core.order.ShippingCalculationStrategy;
@@ -18,7 +19,9 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "Orders")
-@Data public class Order {
+@Data
+@Builder
+public class Order {
     @Id
     @GeneratedValue
     private Long id;
@@ -41,9 +44,20 @@ import java.time.LocalDate;
 
     private BigDecimal price;
 
-    private ShippingMethod shippingMethod;
-
     @Convert(converter = VatRateStrategyConverter.class)
     private VatRateStrategy vatRateStrategy;
 
+    public pl.devdmin.core.order.Order toDomain() {
+        return pl.devdmin.core.order.Order.builder()
+                .id(id)
+                .date(date)
+                .product(product.toDomain())
+                .shippingCalculationStrategy(shippingCalculationStrategy)
+                .amount(amount)
+                .client(client)
+                .address(address)
+                .price(price)
+                .vatRateStrategy(vatRateStrategy)
+                .build();
+    }
 }
