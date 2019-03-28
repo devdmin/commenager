@@ -1,5 +1,6 @@
 package pl.devdmin.dao.acquisition;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.devdmin.dao.product.Product;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Data
+@Builder
 public class Acquisition {
     @Id
     @GeneratedValue

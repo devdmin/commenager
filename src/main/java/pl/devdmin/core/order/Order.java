@@ -14,12 +14,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 
-@Builder(builderMethodName = "defaultBuilder")
+@Builder
 public class Order implements Model {
     private Long id;
-    public static OrderBuilder builder() {
-        return defaultBuilder().date(LocalDate.now());
-    }
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
@@ -61,6 +58,20 @@ public class Order implements Model {
                 .vatValue(getVatValue())
                 .shippingCost(getShippingCost())
                 .totalPrice(getTotalPrice())
+                .build();
+    }
+
+    public pl.devdmin.dao.order.Order toDao(){
+        return pl.devdmin.dao.order.Order.builder()
+                .id(id)
+                .date(date)
+                .product(product.toDao())
+                .shippingCalculationStrategy(shippingCalculationStrategy)
+                .amount(amount)
+                .client(client)
+                .address(address)
+                .price(price)
+                .vatRateStrategy(vatRateStrategy)
                 .build();
     }
 }

@@ -44,4 +44,13 @@ public class Acquisition implements Model {
                 .totalPrice(getTotalPrice())
                 .build();
     }
+
+    public pl.devdmin.dao.acquisition.Acquisition toDao(){
+        return pl.devdmin.dao.acquisition.Acquisition.builder()
+                .id(id)
+                .product(product.toDao())
+                .buyDate(buyDate)
+                .price(price)
+                .build();
+    }
 }
