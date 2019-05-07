@@ -121,7 +121,7 @@ public abstract class AbstractPDFBuilder<T> implements PDFBuilder<T> {
         }
 
         //now add the text
-        contentStream.setFont(PDType1Font.HELVETICA_BOLD,8);
+        contentStream.setFont(PDType1Font.HELVETICA_BOLD,4);
 
         float textx = margin+cellMargin;
         float texty = y-15;

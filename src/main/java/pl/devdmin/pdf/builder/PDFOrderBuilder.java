@@ -63,7 +63,7 @@ public class PDFOrderBuilder extends AbstractPDFBuilder<OrderSnapshot> {
     protected BigDecimal getSumTotalPrice(Set<OrderSnapshot> orders) {
         BigDecimal sumTotalPrice = new BigDecimal("0");
         for (OrderSnapshot order : orders) {
-            sumTotalPrice.add(order.getTotalPrice());
+            sumTotalPrice = sumTotalPrice.add(order.getTotalPrice());
         }
         return sumTotalPrice;
     }

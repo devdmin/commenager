@@ -38,10 +38,11 @@ public class PDFOrderBuilderTest {
         orderSet = new HashSet<OrderSnapshot>();
 
         orderSet.add(Order.builder()
+                .date(LocalDate.now())
                 .product(product)
                 .shippingCalculationStrategy(new AllegroInpostShippingCalculationStrategy())
                 .amount(3)
-                .address("Warszawska 3 43-143 Poznan")
+                .address("Warszawska 4")
                 .client("Joe Doe")
                 .price(new BigDecimal("4.02"))
                 .vatRateStrategy(new Vat23())
@@ -102,7 +103,7 @@ public class PDFOrderBuilderTest {
 
     @Test
     public void testSumTotalPrice() throws IOException{
-        BigDecimal sumTotalPrice = new BigDecimal("0");
+        BigDecimal sumTotalPrice = new BigDecimal("23.8238");
         for (OrderSnapshot order : orderSet) {
             sumTotalPrice.add(order.getTotalPrice());
         }
